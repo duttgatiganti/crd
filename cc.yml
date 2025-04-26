@@ -1,0 +1,21 @@
+# controller-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaler-controller
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoscaler-controller
+  template:
+    metadata:
+      labels:
+        app: autoscaler-controller
+    spec:
+      serviceAccountName: autoscaler-sa
+      containers:
+      - name: autoscaler-controller
+        image: dutt1/crd263:1
+

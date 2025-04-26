@@ -1,0 +1,13 @@
+# podautoscaler.yaml
+apiVersion: autoscaler.example/v1
+kind: PodAutoScaler
+metadata:
+  name: myapp-autoscaler
+  namespace: default
+spec:
+  deploymentName: myapp
+  cpuThresholdHigh: 10
+  cpuThresholdLow: 5
+  minReplicas: 1
+  maxReplicas: 5
+
