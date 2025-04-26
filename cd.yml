@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-policy-controller
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-policy-controller
+  template:
+    metadata:
+      labels:
+        app: traffic-policy-controller
+    spec:
+      serviceAccountName: traffic-policy-controller
+      containers:
+      - name: controller
+        image: dutt1/crd263:2
+        imagePullPolicy: Always
+

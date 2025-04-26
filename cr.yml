@@ -1,0 +1,13 @@
+apiVersion: mesh.example.com/v1alpha1
+kind: TrafficPolicy
+metadata:
+  name: allow-frontend
+  namespace: default
+spec:
+  serviceName: frontend
+  rules:
+    - action: allow
+      condition: "source=backend"
+    - action: deny
+      condition: "source=external"
+
