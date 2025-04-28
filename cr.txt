@@ -1,0 +1,6 @@
+apiVersion: example.com/v1
+kind: Greeting
+metadata:
+  name: hello-greeting
+spec:
+  message: "Hello from CRD!22"

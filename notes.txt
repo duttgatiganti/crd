@@ -1,0 +1,14 @@
+apply crd,cr
+
+correct code with update
+req.txt
+Docker file
+apply sa,cr,crb
+apply cc deployment file
+
+
+errors:
+
+1   storage reininlize   stop,start
+2   need to apply crb
+3   py code should be with update

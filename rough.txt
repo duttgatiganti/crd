@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: greeting-controller
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: greeting-controller-role
+rules:
+  - apiGroups: ["example.com"]
+    resources: ["greetings"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: greeting-controller-rb
+subjects:
+  - kind: ServiceAccount
+    name: greeting-controller
+    namespace: default
+roleRef:
+  kind: Role
+  name: greeting-controller-role
+  apiGroup: rbac.authorization.k8s.io
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeting-controller
+  template:
+    metadata:
+      labels:
+        app: greeting-controller
+    spec:
+      containers:
+      - name: controller
+        image: dutt1/c25:1
+        imagePullPolicy: Always
+
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: greeting-controller-clusterrole
+rules:
+  - apiGroups: ["example.com"]
+    resources: ["greetings"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: greeting-controller-clusterrolebinding
+subjects:
+  - kind: ServiceAccount
+    name: greeting-controller
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: greeting-controller-clusterrole
+  apiGroup: rbac.authorization.k8s.io

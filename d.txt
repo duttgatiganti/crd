@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeting-controller
+  template:
+    metadata:
+      labels:
+        app: greeting-controller
+    spec:
+      serviceAccountName: greeting-controller
+      containers:
+      - name: controller
+        image: dutt1/c25:1
+        imagePullPolicy: Always
