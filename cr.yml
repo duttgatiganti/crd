@@ -1,0 +1,8 @@
+apiVersion: example.com/v1
+kind: MtlsPeer
+metadata:
+  name: mtls-default
+spec:
+  namespace: default
+  mode: STRICT
+
