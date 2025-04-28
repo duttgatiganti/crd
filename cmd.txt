@@ -1,0 +1,46 @@
+ 1  apt update -y
+    2  cd
+    3  api install az-cli
+    4  apt install az-cli
+    5  sudo apt install -y ca-certificates curl apt-transport-https lsb-release gnupg
+    6  curl -sLS https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+    7  sudo apt update
+    8  sudo apt install -y azure-cli
+    9  az --version
+   10  sudo apt update
+   11  sudo apt install -y ca-certificates curl apt-transport-https lsb-release gnupg
+   12  curl -sLS https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+   13  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+   14  sudo apt update
+   15  sudo apt install -y azure-cli
+   16  az --version
+   17  history
+
+
+az account list --output table
+az account set --subscription de54f30d-f375-4d3a-810e-841758031ab5
+
+az aks create --name keyvault-demo-cluster -g adv --node-count 1 --enable-addons azure-keyvault-secrets-provider --enable-oidc-issuer --enable-workload-identity
+
+export SUBSCRIPTION_ID=de54f30d-f375-4d3a-810e-841758031ab5
+export RESOURCE_GROUP=keyvault-demo
+export UAMI=azurekeyvaultsecretsprovider-keyvault-demo-cluster
+export KEYVAULT_NAME=aks-demo-abhi357
+export CLUSTER_NAME=keyvault-demo-cluster
+
+az account set --subscription $SUBSCRIPTION_ID
+
+
+kubectl exec busybox-secrets-store-inline-wi -- ls /mnt/secrets-store/
+
+az aks enable-addons --addons azure-keyvault-secrets-provider --resource-group keyvault-demo --name keyvault-demo-cluster
+
+helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+helm repo update
+
+helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
+  --namespace kube-system \
+  --set syncSecret.enabled=true \
+  --set enableSecretRotation=true
+
+
