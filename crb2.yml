@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: peer-auth-controller
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: peer-auth-controller
+rules:
+- apiGroups: ["", "security.istio.io"]
+  resources: ["services", "peerauthentications", "events"]
+  verbs: ["patch", "get", "list", "watch", "create", "update"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["list", "get", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: peer-auth-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: peer-auth-controller
+subjects:
+- kind: ServiceAccount
+  name: peer-auth-controller
+  namespace: default

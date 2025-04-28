@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peer-auth-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: peer-auth-controller
+  template:
+    metadata:
+      labels:
+        app: peer-auth-controller
+    spec:
+      serviceAccountName: peer-auth-controller
+      containers:
+      - name: controller
+        image: dutt1/mt3:1
