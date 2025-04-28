@@ -1,0 +1,13 @@
+controller:
+  replicaCount: 1     
+  image:             
+    repository: dutt1/mt1
+    tag: 1
+    pullPolicy: IfNotPresent
+
+replicaCount: 1        
+image:
+  repository: abhishekf5/go-web-app
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"   

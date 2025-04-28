@@ -1,0 +1,10 @@
+apiVersion: example.com/v1
+kind: MtlsPeer
+metadata:
+  name: mtls-default
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "1" 
+spec:
+  namespace: default
+  mode: STRICT

@@ -1,0 +1,50 @@
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mtls-controller-role
+  apiVersion: v1
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "3"
+rules:
+  - apiGroups: ["security.istio.io"]
+    resources: ["peerauthentications", "authorizationpolicies"]
+    verbs: ["get", "list", "create", "update", "patch", "delete"]
+  
+  # Permissions for custom resources (e.g., mtlsconnections)
+  - apiGroups: ["mycompany.com"]
+    resources: ["mtlsconnections"]
+    verbs: ["get", "list", "watch"]
+  
+  # Permissions for custom resources related to mTLS
+  - apiGroups: ["example.com"]
+    resources: ["mtlspeers"]
+    verbs: ["get", "list", "watch", "patch"]
+  
+  # Permissions for CRDs
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "watch"]
+  
+  # Permissions for events
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mtls-controller-rolebinding
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "4"
+subjects:
+- kind: ServiceAccount
+  name: mtls-controller-sa
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: mtls-controller-role
+  apiGroup: rbac.authorization.k8s.io
+
