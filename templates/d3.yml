@@ -5,7 +5,7 @@ metadata:
   name: nginx2
   namespace: d2
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: nginx2
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx2
-        image: nginx:1.25
+        image: nginx:{{ .Values.image.tag }}
         ports:
         - containerPort: 80
 ---

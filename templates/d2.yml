@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: httpd
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: httpd
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: httpd
-        image: httpd:2.4
+        image: httpd:{{ .Values.image.tag }}
         ports:
         - containerPort: 80
 ---
