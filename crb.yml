@@ -1,0 +1,38 @@
+# mtls-controller-rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mtls-controller-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mtls-controller-role
+rules:
+  - apiGroups: [""]
+    resources: ["events", "namespaces"]
+    verbs: ["get", "list", "watch", "create"]
+  - apiGroups: ["example.com"]
+    resources: ["mtlspeers"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["security.istio.io"]
+    resources: ["peerauthentications"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mtls-controller-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: mtls-controller-role
+subjects:
+  - kind: ServiceAccount
+    name: mtls-controller-sa
+    namespace: default
+

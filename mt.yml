@@ -1,0 +1,11 @@
+# mtlspeer-service-a.yaml
+apiVersion: example.com/v1
+kind: MtlsPeer
+metadata:
+  name: service-a
+  namespace: default
+spec:
+  selector:
+    app: service-a
+  mode: STRICT
+

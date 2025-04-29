@@ -1,0 +1,20 @@
+# mtls-controller-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mtls-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mtls-controller
+  template:
+    metadata:
+      labels:
+        app: mtls-controller
+    spec:
+      serviceAccountName: mtls-controller-sa
+      containers:
+        - name: controller
+          image: dutt1/29mts1:1
+
