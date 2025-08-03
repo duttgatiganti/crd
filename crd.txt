@@ -1,0 +1,70 @@
+
+creating new resource types in k8s
+extending the cap of k8s by extending api, senarios not covered by k8s
+Dep is validated among Dep def, cannot add own fields, field match to template
+
+crd is templates contains field of crs
+
+3 main obj crd,cr,cc
+cr is validated among crd
+   is instance of crd
+cc manages life cycle of cr: desire state is met such as replicas, it is as per requirement
+
+devops creates crd
+devplor/user who maintain app creates cr
+devops create cc
+11
+
+clone repo
+git clone https://github.com/kubernetes/sample-controller
+cd sample-controller
+
+cat artifacts/examples/crd-status-subresource.yaml
+explain crd
+16
+apply artifacts/examples/crd-status-subresource.yaml
+get crd
+get foo no
+apply cr.artifacts/examples/example-foo.yaml
+get foo
+describe crd foo.
+describe foo name
+kubectl explain crd-name
+kubectl explain crd-name.spec.d-name
+kubectl explain cert.spec.subject
+25
+helm repo add jetstack https://charts.jetstack.io --force-update
+
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.17.2 \
+  --set crds.enabled=true
+
+get crd| grep cert
+get cert 
+kubectl explain certificates.spec.subject
+
+Operatore
+define all events in operator, operator will do  all dep, up,scaling
+it simplifies entire development life cycle
+5
+user install operator
+operator watch cr , if changes update in k8s api
+9 comp : crd,cr,cont
+cont watches cr and maintain desire state=actual
+
+why operator:
+automating manual tasks
+d2 op bkp,update, scaling
+
+installa"
+kubectl
+helm
+olm op lifecycle mng operator hub
+
+12
+write your operatorhelm, ansible, go based
+
+
