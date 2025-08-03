@@ -47,12 +47,15 @@ get cert
 kubectl explain certificates.spec.subject
 
 Operatore
-define all events in operator, operator will do  all dep, up,scaling
+deploy operator, not app
+define all/desire state events in operator, operator will do  all dep, up,scaling
 it simplifies entire development life cycle
+easier to manage
 5
 user install operator
-operator watch cr , if changes update in k8s api
-9 comp : crd,cr,cont
+operator watch cr ,reconcile, if changes update in k8s api
+cert manager issued, not expire, sec inj in api
+9 comp : crd,cr,cont   approved,valid,renewed
 cont watches cr and maintain desire state=actual
 
 why operator:
@@ -65,6 +68,42 @@ helm
 olm op lifecycle mng operator hub
 
 12
-write your operatorhelm, ansible, go based
+write your operator helm, ansible, go based
+https://operatorhub.io/operator/cert-manager
+https://github.com/piyushsachdeva/CKA-2024/tree/main/Resources/Day-50-Operators
+# Install OLM
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.32.0/install.sh | bash -s v0.32.0
+
+# Install the operator
+kubectl create -f https://operatorhub.io/install/cert-manager.yaml
+
+op grop will def ns where operator watch
+apply -g
+
+kubectl get issuer -n default
+kubectl get certificate -n default
+
+# selfsigned-issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned-issuer
+  namespace: default
+spec:
+  selfSigned: {}
+
+# my-app-certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-app-certificate
+  namespace: default
+spec:
+  secretName: my-app-tls
+  dnsNames:
+  - my-app.example.com
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
 
 
